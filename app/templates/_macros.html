@@ -1,0 +1,19 @@
+{% macro csrf() %}<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">{% endmacro %}
+{% macro drop(bt) %}<span class="drop"><b>{{ bt }}</b></span>{% endmacro %}
+{% macro badges(r) %}
+<span class="badge {{ 'text-bg-danger' if r.urgency == 'Critical' else 'text-bg-warning' if r.urgency == 'High' else 'text-bg-secondary' }}">{{ r.urgency }}</span>
+<span class="badge {{ {'pending': 'text-bg-warning', 'fulfilled': 'text-bg-success', 'expired': 'text-bg-secondary'}[r.status] }}">{{ r.status | capitalize }}</span>
+{% if r.is_verified %}<span class="badge text-bg-success">Verified by admin</span>{% endif %}
+{% endmacro %}
+{% macro request_card(r) %}
+<a class="card req-card text-decoration-none mb-3" href="{{ url_for('main.request_detail', rid=r.id) }}">
+  <div class="card-body d-flex gap-3 align-items-center">
+    {{ drop(r.blood_type) }}
+    <div class="flex-grow-1">
+      <div class="fw-semibold">{{ r.patient_name }}, {{ r.units }} unit{{ 's' if r.units > 1 }}</div>
+      <div class="text-muted small">{{ r.hospital }}, {{ r.city }}</div>
+      <div class="mt-1 d-flex gap-1 flex-wrap">{{ badges(r) }}</div>
+    </div>
+  </div>
+</a>
+{% endmacro %}

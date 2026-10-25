@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>Request blood</h3>
+<form method="post" class="card card-body">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <div class="row g-3">
+    <div class="col-12"><label class="form-label">Patient name</label>
+      <input class="form-control" name="patient_name" maxlength="60" value="{{ f.patient_name }}" required></div>
+    <div class="col-6 col-md-4"><label class="form-label">Blood group needed</label>
+      <select class="form-select" name="blood_type">{% for b in BLOOD_TYPES %}<option {{ 'selected' if f.blood_type == b }}>{{ b }}</option>{% endfor %}</select></div>
+    <div class="col-6 col-md-4"><label class="form-label">Units</label>
+      <input class="form-control" type="number" name="units" min="1" max="10" value="{{ f.units or 1 }}" required></div>
+    <div class="col-12 col-md-4"><label class="form-label">Urgency</label>
+      <select class="form-select" name="urgency">{% for u in URGENCIES %}<option {{ 'selected' if (f.urgency or 'High') == u }}>{{ u }}</option>{% endfor %}</select></div>
+    <div class="col-12 col-md-6"><label class="form-label">Hospital</label>
+      <input class="form-control" name="hospital" maxlength="80" value="{{ f.hospital }}" required></div>
+    <div class="col-12 col-md-6"><label class="form-label">City</label>
+      <select class="form-select" name="city">{% for c in CITIES %}<option {{ 'selected' if f.city == c }}>{{ c }}</option>{% endfor %}</select></div>
+    <div class="col-12"><label class="form-label">Contact number</label>
+      <input class="form-control" name="contact_phone" placeholder="0300-1234567" value="{{ f.contact_phone }}" required></div>
+  </div>
+  <button class="btn btn-brand mt-3 align-self-start">Post request</button>
+</form>
+{% endblock %}

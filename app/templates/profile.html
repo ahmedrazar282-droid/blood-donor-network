@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>My donor profile</h3>
+<form method="post" class="card card-body">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <div class="row g-3">
+    <div class="col-12 col-md-6"><label class="form-label">Blood group</label>
+      <select class="form-select" name="blood_type">{% for b in BLOOD_TYPES %}<option {{ 'selected' if donor and donor.blood_type == b }}>{{ b }}</option>{% endfor %}</select></div>
+    <div class="col-12 col-md-6"><label class="form-label">City</label>
+      <select class="form-select" name="city">{% for c in CITIES %}<option {{ 'selected' if donor and donor.city == c }}>{{ c }}</option>{% endfor %}</select></div>
+    <div class="col-12"><label class="form-label">Date of my last donation (leave empty if never)</label>
+      <input class="form-control" type="date" name="last_donation_date" max="{{ today }}" value="{{ donor.last_donation_date if donor and donor.last_donation_date }}"></div>
+    <div class="col-12 form-check ms-2"><input class="form-check-input" type="checkbox" name="is_available" id="av" {{ 'checked' if not donor or donor.is_available }}>
+      <label class="form-check-label" for="av">I am available to donate</label></div>
+  </div>
+  {% if donor %}
+    <div class="alert {{ 'alert-success' if wait == 0 else 'alert-warning' }} mt-3 mb-0 py-2">
+      {% if wait == 0 %}You are eligible to donate.{% else %}Not eligible yet. Donors wait 90 days between donations; {{ wait }} day{{ 's' if wait > 1 }} to go.{% endif %}
+    </div>
+  {% endif %}
+  <button class="btn btn-brand mt-3 align-self-start">Save profile</button>
+</form>
+{% endblock %}

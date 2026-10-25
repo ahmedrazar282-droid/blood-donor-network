@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% from "_macros.html" import request_card %}
+{% block content %}
+<div class="py-3">
+  <h1 class="fw-bold">Find a blood donor in Sindh, fast</h1>
+  <p class="lead text-muted">Donors set their availability. People in need post a request and reach matching donors directly.</p>
+  {% if current_user.is_authenticated %}
+    <a class="btn btn-brand me-2" href="{{ url_for('main.new_request') }}">Request blood</a>
+    <a class="btn btn-outline-secondary" href="{{ url_for('main.requests_list') }}">Browse requests</a>
+  {% else %}
+    <a class="btn btn-brand me-2" href="{{ url_for('auth.signup') }}">Sign up as a donor or requester</a>
+    <a class="btn btn-outline-secondary" href="{{ url_for('auth.login') }}">Log in</a>
+  {% endif %}
+</div>
+<div class="card my-3"><div class="card-body d-flex text-center stat">
+  <div class="flex-fill"><b>{{ stats.donors }}</b>donors</div>
+  <div class="flex-fill"><b>{{ stats.pending }}</b>open requests</div>
+  <div class="flex-fill"><b>{{ stats.fulfilled }}</b>fulfilled</div>
+</div></div>
+{% if latest %}
+  <h5 class="mt-4">Open requests</h5>
+  {% for r in latest %}{{ request_card(r) }}{% endfor %}
+{% endif %}
+{% endblock %}

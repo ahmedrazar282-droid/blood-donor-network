@@ -1,0 +1,11 @@
+:root { --brand: #b3122b; }
+body { background: #f4f5f8; }
+.navbar-brand { color: var(--brand) !important; font-weight: 700; }
+.btn-brand { background: var(--brand); border-color: var(--brand); color: #fff; }
+.btn-brand:hover { background: #8f0e22; border-color: #8f0e22; color: #fff; }
+.drop { flex: none; width: 46px; height: 46px; background: var(--brand); color: #fff;
+        border-radius: 50% 0 50% 50%; transform: rotate(-45deg); display: grid; place-items: center; margin: 6px; }
+.drop b { transform: rotate(45deg); font-size: 15px; }
+.req-card { color: inherit; }
+.req-card:hover { border-color: var(--brand); }
+.stat b { display: block; font-size: 1.8rem; }

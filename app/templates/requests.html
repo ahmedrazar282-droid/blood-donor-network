@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% from "_macros.html" import request_card %}
+{% block content %}
+<h3>Blood requests</h3>
+<form method="get" class="row g-2 mb-3">
+  <div class="col-12 col-md-4"><select class="form-select" name="blood_type" onchange="this.form.submit()">
+    <option value="">All blood groups</option>
+    {% for b in BLOOD_TYPES %}<option {{ 'selected' if f.blood_type == b }}>{{ b }}</option>{% endfor %}</select></div>
+  <div class="col-12 col-md-4"><select class="form-select" name="city" onchange="this.form.submit()">
+    <option value="">All cities</option>
+    {% for c in CITIES %}<option {{ 'selected' if f.city == c }}>{{ c }}</option>{% endfor %}</select></div>
+  <div class="col-12 col-md-4"><select class="form-select" name="status" onchange="this.form.submit()">
+    <option value="">Any status</option>
+    {% for s in ['pending', 'fulfilled', 'expired'] %}<option {{ 'selected' if f.status == s }}>{{ s }}</option>{% endfor %}</select></div>
+</form>
+{% for r in items %}{{ request_card(r) }}
+{% else %}<p class="text-muted">No requests match these filters. Clear a filter or post a new request.</p>{% endfor %}
+{% endblock %}

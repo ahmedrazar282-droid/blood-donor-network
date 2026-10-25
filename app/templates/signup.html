@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card mx-auto" style="max-width: 460px;"><div class="card-body">
+  <h4>Create an account</h4>
+  <form method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label class="form-label mt-2">Full name</label><input class="form-control" name="full_name" maxlength="80" value="{{ f.full_name }}" required>
+    <label class="form-label mt-2">Email</label><input class="form-control" type="email" name="email" value="{{ f.email }}" required>
+    <label class="form-label mt-2">Mobile number</label><input class="form-control" name="phone" placeholder="0300-1234567" value="{{ f.phone }}" required>
+    <label class="form-label mt-2">Password (8+ characters)</label><input class="form-control" type="password" name="password" minlength="8" required>
+    <label class="form-label mt-2">Confirm password</label><input class="form-control" type="password" name="confirm" required>
+    <button class="btn btn-brand w-100 mt-3">Sign up</button>
+  </form>
+</div></div>
+{% endblock %}
