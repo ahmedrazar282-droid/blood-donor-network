@@ -1,0 +1,4 @@
+# Used on the hosting server (Render). Locally you only need requirements.txt
+-r requirements.txt
+gunicorn>=22.0
+psycopg[binary]>=3.2

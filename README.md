@@ -54,10 +54,17 @@ seed.py, run.py     demo data and entry point
 Hashed passwords, server-side validation, CSRF protection on every form, ORM queries (no raw SQL),
 auto-escaped templates, role checks on admin routes, ownership checks on requests, secrets in `.env`.
 
-## Deploy (Render / PythonAnywhere)
-Set environment variables `SECRET_KEY` (and optionally `MAIL_USERNAME`, `MAIL_PASSWORD`), install
-`requirements.txt` plus `gunicorn`, and start with `gunicorn run:app`. Do not use `debug=True` in production.
-For a persistent database on a host with a temporary disk, set `DATABASE_URL` to a PostgreSQL URL.
+## Deploy on Render (free)
+1. Push the code to GitHub.
+2. Render: New, PostgreSQL (free). Copy the **Internal Database URL**.
+3. Render: New, Web Service, connect the GitHub repo, then set:
+   - Build command: `pip install -r requirements-prod.txt`
+   - Start command: `gunicorn run:app --workers 1 --threads 4`
+   - Instance type: Free
+   - Environment variables: `PYTHON_VERSION=3.12.3`, `SECRET_KEY` (long random string), `DATABASE_URL` (the Internal Database URL),
+     `SEED_DEMO=1` (demo data), `ADMIN_PASSWORD` (your own admin password), and optionally `MAIL_USERNAME`, `MAIL_PASSWORD`.
+4. The free web service sleeps after 15 minutes without visitors; the first visit afterwards takes about a minute.
+   Use PostgreSQL (not SQLite) on Render, because the free server's disk is wiped on restart.
 
 ## Known limitations
 - Verification is manual (admin calls the contact number); unverified requests are still visible
