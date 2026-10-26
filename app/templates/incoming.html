@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% from "_macros.html" import csrf, drop, badges %}
 {% block content %}
-<h3>Incoming requests</h3>
+<div class="page-head"><h1>Incoming requests</h1><p>People who asked you to donate.</p></div>
 <p class="text-muted">People who asked you to donate. Your phone number is shared only if you accept.</p>
 {% if not current_user.donor %}
   <p>Set up your <a href="{{ url_for('main.profile') }}">donor profile</a> to receive requests.</p>

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-<h3>My donor profile</h3>
+<div class="page-head"><h1>My donor profile</h1><p>Keep your details and availability up to date so people can find you.</p></div>
 <form method="post" class="card card-body">
   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
   <div class="row g-3">

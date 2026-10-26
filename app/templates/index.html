@@ -1,24 +1,84 @@
 {% extends "base.html" %}
 {% from "_macros.html" import request_card %}
-{% block content %}
-<div class="py-3">
-  <h1 class="fw-bold">Find a blood donor in Sindh, fast</h1>
-  <p class="lead text-muted">Donors set their availability. People in need post a request and reach matching donors directly.</p>
-  {% if current_user.is_authenticated %}
-    <a class="btn btn-brand me-2" href="{{ url_for('main.new_request') }}">Request blood</a>
-    <a class="btn btn-outline-secondary" href="{{ url_for('main.requests_list') }}">Browse requests</a>
-  {% else %}
-    <a class="btn btn-brand me-2" href="{{ url_for('auth.signup') }}">Sign up as a donor or requester</a>
-    <a class="btn btn-outline-secondary" href="{{ url_for('auth.login') }}">Log in</a>
-  {% endif %}
+{% block main_class %}page wide{% endblock %}
+{% block hero %}
+<section class="hero">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-7">
+        <span class="eyebrow"><i class="bi bi-droplet-fill"></i> Free and made for Sindh</span>
+        <h1>When every minute matters, find a donor who is ready.</h1>
+        <p class="lead">Donors set their availability. Families post a request and reach compatible donors in their own city, directly and safely.</p>
+        <div class="d-flex flex-wrap gap-2 mt-4">
+          {% if current_user.is_authenticated %}
+            <a class="btn btn-light-pill" href="{{ url_for('main.new_request') }}"><i class="bi bi-plus-circle"></i> Request blood</a>
+            <a class="btn btn-ghost" href="{{ url_for('main.requests_list') }}">Browse requests</a>
+          {% else %}
+            <a class="btn btn-light-pill" href="{{ url_for('auth.signup') }}"><i class="bi bi-heart-pulse"></i> Become a donor</a>
+            <a class="btn btn-ghost" href="{{ url_for('auth.login') }}">Log in to request blood</a>
+          {% endif %}
+        </div>
+        <ul class="trust">
+          <li><i class="bi bi-check-circle-fill"></i> Matches the correct blood groups automatically</li>
+          <li><i class="bi bi-shield-lock-fill"></i> Phone numbers stay private until a donor accepts</li>
+          <li><i class="bi bi-patch-check-fill"></i> Requests can be verified by an admin</li>
+        </ul>
+      </div>
+      <div class="col-lg-5">
+        <div class="hero-panel">
+          <h2>Eight blood groups, one network</h2>
+          <div class="chip-grid">
+            {% for b in BLOOD_TYPES %}<div class="chip {{ 'hl' if b == 'O-' }}">{{ b }}</div>{% endfor %}
+          </div>
+          <p>O- can give to everyone. AB+ can receive from everyone.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="container stats-wrap" style="max-width: 1140px;">
+  <div class="row g-3">
+    <div class="col-12 col-md-4"><div class="card stat-card"><div class="ico"><i class="bi bi-people-fill"></i></div><div><b>{{ stats.donors }}</b><span>Registered donors</span></div></div></div>
+    <div class="col-12 col-md-4"><div class="card stat-card"><div class="ico"><i class="bi bi-bell-fill"></i></div><div><b>{{ stats.pending }}</b><span>Open requests</span></div></div></div>
+    <div class="col-12 col-md-4"><div class="card stat-card"><div class="ico"><i class="bi bi-heart-fill"></i></div><div><b>{{ stats.fulfilled }}</b><span>Requests fulfilled</span></div></div></div>
+  </div>
 </div>
-<div class="card my-3"><div class="card-body d-flex text-center stat">
-  <div class="flex-fill"><b>{{ stats.donors }}</b>donors</div>
-  <div class="flex-fill"><b>{{ stats.pending }}</b>open requests</div>
-  <div class="flex-fill"><b>{{ stats.fulfilled }}</b>fulfilled</div>
-</div></div>
+{% endblock %}
+
+{% block content %}
 {% if latest %}
-  <h5 class="mt-4">Open requests</h5>
+  <h2 class="section-title">Open requests right now</h2>
+  <p class="section-sub">Verified requests appear first. Open one to see matching donors.</p>
   {% for r in latest %}{{ request_card(r) }}{% endfor %}
 {% endif %}
+
+<h2 class="section-title">How it works</h2>
+<p class="section-sub">Three simple steps, from registration to a fulfilled request.</p>
+<div class="row g-3">
+  <div class="col-md-4"><div class="card step"><div class="num">1</div><h3>Register as a donor</h3><p>Add your blood group, city and availability. You stay in control and can switch availability off at any time.</p></div></div>
+  <div class="col-md-4"><div class="card step"><div class="num">2</div><h3>Post or receive a request</h3><p>Families post a request in a minute. We match compatible, available donors, and the same city comes first.</p></div></div>
+  <div class="col-md-4"><div class="card step"><div class="num">3</div><h3>Donate and close the request</h3><p>Donors accept, share their contact only after saying yes, and the request is marked fulfilled when the need is met.</p></div></div>
+</div>
+
+<h2 class="section-title">Who can give to whom</h2>
+<p class="section-sub">The matching in this system follows these rules, so donors are never suggested by mistake.</p>
+{% set compat = [('O-', ['All groups']), ('O+', ['O+', 'A+', 'B+', 'AB+']), ('A-', ['A-', 'A+', 'AB-', 'AB+']), ('A+', ['A+', 'AB+']),
+                 ('B-', ['B-', 'B+', 'AB-', 'AB+']), ('B+', ['B+', 'AB+']), ('AB-', ['AB-', 'AB+']), ('AB+', ['AB+'])] %}
+<div class="compat">
+  {% for donor, to in compat %}
+    <div class="compat-item"><span class="type-chip">{{ donor }}</span>
+      <div class="small text-muted mb-1">can give to</div>
+      {% for t in to %}<span class="mini-chip">{{ t }}</span>{% endfor %}</div>
+  {% endfor %}
+</div>
+
+<div class="cta-band">
+  <h2>One donation can help save up to three lives.</h2>
+  <p class="mb-3" style="opacity:.9">Join the network today. It takes one minute.</p>
+  {% if current_user.is_authenticated %}
+    <a class="btn btn-light-pill" href="{{ url_for('main.profile') }}">Update my donor profile</a>
+  {% else %}
+    <a class="btn btn-light-pill" href="{{ url_for('auth.signup') }}">Create my account</a>
+  {% endif %}
+</div>
 {% endblock %}

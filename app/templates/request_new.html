@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-<h3>Request blood</h3>
+<div class="page-head"><h1>Request blood</h1><p>Tell us what is needed. Matching donors appear right after you post.</p></div>
 <form method="post" class="card card-body">
   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
   <div class="row g-3">

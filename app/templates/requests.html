@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% from "_macros.html" import request_card %}
 {% block content %}
-<h3>Blood requests</h3>
+<div class="page-head"><h1>Blood requests</h1><p>Verified requests appear first. Open one to see matching donors.</p></div>
 <form method="get" class="row g-2 mb-3">
   <div class="col-12 col-md-4"><select class="form-select" name="blood_type" onchange="this.form.submit()">
     <option value="">All blood groups</option>

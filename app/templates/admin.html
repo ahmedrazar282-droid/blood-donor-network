@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% from "_macros.html" import csrf %}
 {% block content %}
-<h3>Admin dashboard</h3>
+<div class="page-head"><h1>Admin dashboard</h1><p>Verify requests, review reports and manage users.</p></div>
 <div class="card mb-4"><div class="card-body d-flex text-center stat flex-wrap">
   {% for label, key in [('users', 'users'), ('donors', 'donors'), ('pending', 'pending'), ('fulfilled', 'fulfilled'), ('expired', 'expired')] %}
     <div class="flex-fill"><b>{{ stats[key] }}</b>{{ label }}</div>
